@@ -35,6 +35,17 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}   
-      
+
+      - name: SSH to EC2 and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PUBLIC_IP }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull your-docker-hub-username/your-repo-name:latest
+            docker stop your-container-name || true
+            docker rm your-container-name || true
+            docker run -d --name your-container-name -p 80:80 your-docker-hub-username/your-repo-name:latest
+       
      
-   
