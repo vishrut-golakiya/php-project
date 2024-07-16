@@ -42,14 +42,22 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/ssh_key
           chmod 600 /tmp/ssh_key
           
-      - name: SSH to EC2 and deploy
-        uses: appleboy/ssh-action@v0.1.10
+# Step 4: SSH into EC2 instance and pull Docker image
+      - name: SSH into EC2 and Pull Docker Image
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
           username: ec2-user
-          key: /tmp/ssh_key
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull vishrut0/demo-project:master
-            docker stop project || true
-            docker rm project || true
-            docker run -d --name project -p 80:80 vishrut0/demo-project:master
+
+      # Step 5: Run Docker container on EC2 instance
+      - name: Run Docker Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PUBLIC_IP }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker run -d -p 80:80 vishrut0/demo-project:master
