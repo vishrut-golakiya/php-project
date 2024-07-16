@@ -7,11 +7,8 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -36,25 +33,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: SSH to EC2 and deploy
-        uses: actions/checkout@v2
-        with:
-          host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: demophp-project
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker pull vishrut0/demo-project:master
-            # docker stop project || true
-            # docker rm project || true
-            docker run -d --name project -p 80:80 vishrut0/demo-project:master
-
-
   deploy:
-
     runs-on: ubuntu
-
     needs: build
-
     steps:
       - name: SSH to EC2 and deploy
         uses: actions/checkout@v2
