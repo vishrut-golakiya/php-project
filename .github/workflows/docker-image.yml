@@ -57,7 +57,7 @@ jobs:
 
     steps:
       - name: SSH to EC2 and deploy
-        uses: appleboy/ssh-action@master
+        uses: actions/checkout@v2
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
           username: demophp-project
