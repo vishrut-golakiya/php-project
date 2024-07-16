@@ -47,7 +47,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ec2-user
+          username: demophp-project
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull vishrut0/demo-project:master
@@ -57,7 +57,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ec2-user
+          username: demophp-project
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker run -d -p 80:80 vishrut0/demo-project:master
