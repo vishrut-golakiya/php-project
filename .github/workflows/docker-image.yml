@@ -36,18 +36,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Decode SSH private key
-        id: decode_key
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > /tmp/ssh_key
-          chmod 600 /tmp/ssh_key
-
       - name: SSH to EC2 and deploy
         uses: actions/checkout@v2
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
           username: demophp-project
-          key: /tmp/ssh_key
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull vishrut0/demo-project:master
             docker stop project || true
