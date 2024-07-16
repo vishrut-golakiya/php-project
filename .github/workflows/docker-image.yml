@@ -35,29 +35,21 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          
+
       - name: Decode SSH private key
         id: decode_key
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/ssh_key
+          echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > /tmp/ssh_key
           chmod 600 /tmp/ssh_key
-          
-# Step 4: SSH into EC2 instance and pull Docker image
-      - name: SSH into EC2 and Pull Docker Image
+
+      - name: SSH to EC2 and deploy
         uses: actions/checkout@v2
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
           username: demophp-project
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: /tmp/ssh_key
           script: |
             docker pull vishrut0/demo-project:master
-
-      # Step 5: Run Docker container on EC2 instance
-      - name: Run Docker Container
-        uses: actions/checkout@v2
-        with:
-          host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: demophp-project
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker run -d -p 80:80 vishrut0/demo-project:master
+            docker stop project || true
+            docker rm project || true
+            docker run -d --name project -p 80:80 vishrut0/demo-project:master
