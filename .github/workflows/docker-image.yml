@@ -43,9 +43,9 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull your-docker-hub-username/your-repo-name:latest
-            docker stop your-container-name || true
-            docker rm your-container-name || true
-            docker run -d --name your-container-name -p 80:80 your-docker-hub-username/your-repo-name:latest
+            docker pull vishrut0/demo-project:master
+            docker stop demo || true
+            docker rm demo || true
+            docker run -d --name demo -p 80:80 vishrut0/demo-project:master
        
      
