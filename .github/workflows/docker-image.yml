@@ -44,8 +44,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull vishrut0/demo-project:master
-            docker stop demo || true
-            docker rm demo || true
-            docker run -d --name demo -p 80:80 vishrut0/demo-project:master
+            docker stop project || true
+            docker rm project || true
+            docker run -d --name project -p 80:80 vishrut0/demo-project:master
        
      
