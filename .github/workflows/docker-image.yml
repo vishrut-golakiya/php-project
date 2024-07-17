@@ -44,6 +44,7 @@ jobs:
           username: demophp-project
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            ssh -vvv -i ${{ secrets.EC2_SSH_KEY }} demophp-project@${{ secrets.EC2_PUBLIC_IP }} exit
             docker pull vishrut0/demo-project:master
             docker stop vishrut0/demo-project || true
             docker rm vishrut0/demo-project || true
