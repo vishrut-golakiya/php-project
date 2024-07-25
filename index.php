@@ -17,7 +17,7 @@
     </header>
     <main>
         <h2>Home Page</h2>
-        <p>This is the home page of the demo website.</p>
+        <p>This is the home page of the demo file.</p>
     </main>
     <footer>
         <p>&copy; 2024 Demo Website</p>
